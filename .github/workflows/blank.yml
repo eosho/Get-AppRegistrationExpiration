@@ -34,8 +34,17 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          
-          Workflow url = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
 
-          Workflow url - ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}
+      - name: Create completed comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hey, @${{ github.event.comment.user.login }}!
+            :tada: Core infra deployment to ${{ env.ENVIRONMENT }} completed! :tada:
+
+             Workflow url = "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+             Workflow url - ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}
 
